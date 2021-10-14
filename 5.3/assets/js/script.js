@@ -30,10 +30,6 @@ var loadTasks = function() {
     };
   }
 
-  $("#modalDueDate").datepicker({
-    minDate: 1
-  });
-
   // loop over object properties
   $.each(tasks, function(list, arr) {
     console.log(list, arr);
@@ -154,21 +150,18 @@ $("#task-form-modal .btn-primary").click(function() {
 });
 
 // task text was clicked
-$(".list-group").on("change", "input[type='text']", function() {
-  // get current text
-  var date = $(this).text().trim();
-      // create new input element
-  var dateInput = $("<input>").attr("type", "text").addClass("form-control").val(date);
+$(".list-group").on("click", "p", function() {
+  // get current text of p element
+  var text = $(this)
+    .text()
+    .trim();
 
-  $(this).replaceWith(dateInput);
+  // replace p element with a new textarea
+  var textInput = $("<textarea>").addClass("form-control").val(text);
+  $(this).replaceWith(textInput);
 
-  // enable jquery ui datepicker
-  dateInput.datepicker({
-    minDate: 1
-  });
-
-  // automatically bring up the calendar
-  dateInput.trigger("focus")
+  // auto focus new element
+  textInput.trigger("focus");
 });
 
 // editable field was un-focused
@@ -249,13 +242,6 @@ $("#remove-tasks").on("click", function() {
   console.log(tasks);
   saveTasks();
 });
-
-setInterval(function() {
-  $(".card .list-group-item").each(function(index, el) {
-    auditTask(el);
-    console.log(taskEl);
-  });
-}, (1000 * 60) *30;
 
 // load tasks for the first time
 loadTasks();
